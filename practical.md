@@ -15,6 +15,8 @@ In this session, we’ll be using the R package Shiny to build an interactive we
 
 Choose a name for the app, and where you’d like it to live. You’ll see that R Studio has helped us by giving us the boilerplate code necessary to get a Shiny app running, and populates it with data on the eruption of the Old Faithful Geyser in Yellowstone Park, USA. Before we get into how the code works, hit the “Run App” button at the top of the screen and play around with the demo app.
 
+## The structure of a Shiny app
+
 You’ll see that Shiny has generated a web page with two sections: a histogram, and a slider to adjust the number of bins in the histogram. This is the User Interface, or UI, often called the front end. If you look at the R Studio console, you’ll notice that you can’t enter anything because it’s currently running an R server that’s listening out for your inputs on the front end slider and responding by updating the graph; this server is often called the back end. When you write a Shiny app, you’ll specify:
 
 * how you want the UI to appear and what levers you want to give the user to play with the data
@@ -29,7 +31,11 @@ Looking at the server object now, you’ll see it’s a function with the argume
 
 The last thing to notice is that the `server` function is not actually called in the code; instead, it is passed as an argument to the `shinyApp` function in the last line. Unlike the usual R paradigm of imperative programming where you issue a command and expect it to be carried out immediately, Shiny adopts a declarative programming paradigm where you describe the  goals and constraints, and rely on Shiny to decide when to actually execute the code.
 
+## Reactivity
+
 But when does Shiny choose to execute the code? Well, you’ll have noticed that the histogram updates every time you move the slider; it reacts to user input. This is a principle called “reactivity” that is common in web apps: Shiny chooses to recalculate the outputs whenever the input changes. This means that any calculations you do based on user input must either be contained by an output function like renderPlot, or be wrapped up in a reactive expression using `reactive()` and assigned to a variable. You can then use the reactive expression by calling it like a function.
+
+## Find out more
 
 That should give you an idea of the main features of Shiny. Of course, there’s much more to learn. A good place to look is Hadley Wickham’s [Mastering Shiny](https://mastering-shiny.org/index.html) book, particularly [Chapter 2](https://mastering-shiny.org/basic-ui.html), which runs through the main UI components that you’ll need for building apps, and [Chapter 4](https://mastering-shiny.org/basic-case-study.html) that provides an example of a more complex Shiny app using medical data. As usual, Posit provide a very handy [cheat sheet](https://rstudio.github.io/cheatsheets/html/shiny.html).
 
