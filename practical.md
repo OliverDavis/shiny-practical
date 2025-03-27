@@ -45,4 +45,4 @@ Using this [simulated data set](moons.csv), can you use your knowledge of [KNN c
 Now use the code from Challenge 2 to make a Shiny app that shows how the decision boundary changes with different values of k.
 
 ## Challenge 4
-Shiny is now also available as a [Python package](https://shiny.posit.co/py/). Can you reimplement one of the visualisations you've made in R using Python?
+Shiny is now also available as a [Python package](https://shiny.posit.co/py/). How would you reimplement one of the visualisations you've made in R using Python?
