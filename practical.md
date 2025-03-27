@@ -1,4 +1,4 @@
-## Interactive Data Vis in R
+## Getting started with Shiny
 
 In this session, we’ll be using the R package Shiny to build an interactive web app. Although using Shiny means you don’t have to worry about coding HTML, Javascript or CSS (all the code is R), there are some concepts common to other web apps that you’ll need to appreciate what’s going on. We’ll introduce those as they appear below. First of all, create a new Shiny app in R Studio:
 
@@ -21,6 +21,8 @@ Looking at the server object now, you’ll see it’s a function with the argume
 The last thing to notice is that the server function is not actually called in the code; instead, it is passed as an argument to the shinyApp function in the last line. Unlike the usual R paradigm of imperative programming where you issue a command and expect it to be carried out immediately, Shiny adopts a declarative programming paradigm where you describe the  goals and constraints, and rely on Shiny to decide when to actually execute the code.
 
 But when does Shiny choose to execute the code? Well, you’ll have noticed that the histogram updates every time you move the slider; it reacts to user input. This is a principle called “reactivity” that is common in web apps: Shiny chooses to recalculate the outputs whenever the input changes. This means that any calculations you do based on user input must either be contained by an output function like renderPlot, or be wrapped up in a reactive expression using `reactive()` and assigned to a variable. You can then use the reactive expression by calling it like a function.
+
+### Challenge 1
 
 
 
