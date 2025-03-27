@@ -33,16 +33,16 @@ But when does Shiny choose to execute the code? Well, you’ll have noticed that
 
 That should give you an idea of the main features of Shiny. Of course, there’s much more to learn. A good place to look is Hadley Wickham’s [Mastering Shiny](https://mastering-shiny.org/index.html) book, particularly [Chapter 2](https://mastering-shiny.org/basic-ui.html), which runs through the main UI components that you’ll need for building apps, and [Chapter 4](https://mastering-shiny.org/basic-case-study.html) that provides an example of a more complex Shiny app using medical data. As usual, Posit provide a very handy [cheat sheet](https://rstudio.github.io/cheatsheets/html/shiny.html).
 
-## Challenge 1
+## Challenge 1 (10 mins)
 Using the `medicaldata` package, modify the basic Shiny app to take user inputs and produce a plot of one of the medical data sets using `ggplot2`. Add a table of the first few lines of data.
 
-## Challenge 2
+## Challenge 2 (60 mins)
 Using this [simulated data set](moons.csv), can you use your knowledge of [KNN classification](https://www.rdocumentation.org/packages/class/versions/7.3-23/topics/knn) and `ggplot2` to reproduce this plot of a KNN decision boundary?
 
 ![plot of a KNN decision boundary](knn.png)
 
-## Challenge 3
+## Challenge (20 mins)
 Now use the code from Challenge 2 to make a Shiny app that shows how the decision boundary changes with different values of k.
 
-## Challenge 4
+## Challenge 4 (60 mins)
 Shiny is now also available as a [Python package](https://shiny.posit.co/py/). How would you reimplement one of the visualisations you've made in R using Python?
