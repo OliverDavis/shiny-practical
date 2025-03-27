@@ -1,4 +1,13 @@
-## Getting started with Shiny
+# Getting started with Shiny for R
+
+Interactive graphics can help us handle complexity by allowing users to interact with the data. Here we're going to explore a popular way of doing this in R, using the Shiny package.
+
+## Intended learning outcomes
+After this practical, you should be able to:
+* explain the principles of the Shiny package
+* use Shiny to make interactive data graphics
+
+## Getting started
 
 In this session, we’ll be using the R package Shiny to build an interactive web app. Although using Shiny means you don’t have to worry about coding HTML, Javascript or CSS (all the code is R), there are some concepts common to other web apps that you’ll need to appreciate what’s going on. We’ll introduce those as they appear below. First of all, create a new Shiny app in R Studio:
 
@@ -22,7 +31,7 @@ The last thing to notice is that the `server` function is not actually called in
 
 But when does Shiny choose to execute the code? Well, you’ll have noticed that the histogram updates every time you move the slider; it reacts to user input. This is a principle called “reactivity” that is common in web apps: Shiny chooses to recalculate the outputs whenever the input changes. This means that any calculations you do based on user input must either be contained by an output function like renderPlot, or be wrapped up in a reactive expression using `reactive()` and assigned to a variable. You can then use the reactive expression by calling it like a function.
 
-### Challenge 1
+## Challenge 1
 
 
 
