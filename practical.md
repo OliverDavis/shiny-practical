@@ -1,4 +1,4 @@
-# Getting started with Shiny for R
+# Getting started with Shiny
 
 Interactive graphics can help us handle complexity by allowing users to interact with the data. Here we're going to explore a popular way of doing this in R, using the Shiny package.
 
@@ -37,6 +37,12 @@ That should give you an idea of the main features of Shiny. Of course, there’s
 Using the `medicaldata` package, modify the basic Shiny app to take user inputs and produce a plot of one of the medical data sets using `ggplot2`. Add a table of the first few lines of data.
 
 ## Challenge 2
-Using this [simulated data set](moons.csv), can you use your knowledge of KNN classification and `ggplot2` to reproduce this plot?
+Using this [simulated data set](moons.csv), can you use your knowledge of [KNN classification](https://www.rdocumentation.org/packages/class/versions/7.3-23/topics/knn) and `ggplot2` to reproduce this plot of a KNN decision boundary?
 
 ![plot of a KNN decision boundary](knn.png)
+
+## Challenge 3
+Now use the code from Challenge 2 to make a Shiny app that shows how the decision boundary changes with different values of k.
+
+## Challenge 4
+Shiny is now also available as a [Python package](https://shiny.posit.co/py/). Can you reimplement one of the visualisations you've made in R using Python?
