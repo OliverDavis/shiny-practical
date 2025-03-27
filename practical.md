@@ -36,4 +36,7 @@ That should give you an idea of the main features of Shiny. Of course, there’s
 ## Challenge 1
 Using the `medicaldata` package, modify the basic Shiny app to take user inputs and produce a plot of one of the medical data sets using `ggplot2`. Add a table of the first few lines of data.
 
+## Challenge 2
+Using this [simulated data set](moons.csv), can you use your knowledge of KNN classification and `ggplot2` to reproduce this plot?
 
+![plot of a KNN decision boundary](knn.png)
