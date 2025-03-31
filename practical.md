@@ -108,6 +108,74 @@ Using this [simulated data set](moons.csv), can you use your knowledge of [KNN c
 
 ![plot of a KNN decision boundary](knn.png)
 
+<details>
+<summary>Solution</summary>
+
+```R
+
+library(readr)
+library(ggplot2)
+library(dplyr)
+library(class)
+
+train <- read_csv("moons.csv") |>
+  mutate(cl=as.factor(cl))
+
+# Define the grid limits
+x_min <- min(train$x) - 0.2
+x_max <- max(train$x) + 0.2
+y_min <- min(train$y) - 0.2
+y_max <- max(train$y) + 0.2
+
+# Create a grid of values
+test <- expand.grid(x = seq(x_min, x_max, by = 0.1),
+                    y = seq(y_min, y_max, by = 0.1))
+
+
+# Train the k-NN model and predict on the grid
+k <- 20  # Number of neighbors
+classif <- knn(train = train[,1:2], prob = TRUE, test = test, 
+                         cl = train$cl, k = k)
+
+prob <- attr(classif, "prob")
+
+dataf <- bind_rows(mutate(test,
+                          prob=prob,
+                          cls=0,
+                          prob_cls=ifelse(classif==cls,
+                                          1, 0)),
+                   mutate(test,
+                          prob=prob,
+                          cls=1,
+                          prob_cls=ifelse(classif==cls,
+                                          1, 0))) |>
+  mutate(cls=as.factor(cls))
+
+
+ggplot(dataf) +
+  geom_point(aes(x=x, y=y, col=cls, size=prob, alpha=0.2),
+             data = mutate(test, cls=classif),
+             show.legend=c(alpha=FALSE, cls=TRUE, prob=TRUE)) + 
+  scale_size(range=c(0,1.5)) +
+  geom_contour(aes(x=x, y=y, z=prob_cls, group=cls, color=cls),
+               bins=2,
+               data=dataf) +
+  geom_point(aes(x=x, y=y, col=cl),
+             size=2,
+             data=train) +
+  geom_point(aes(x=x, y=y),
+             size=2, shape=1,
+             data=train) +
+  labs(title = "KNN decision boundary") +
+  guides(colour=guide_legend("class"),
+         size=guide_legend("probability")) +
+  theme_minimal()
+
+```
+
+</details>
+
+
 ## Challenge 3 (20 mins)
 Now use the code from Challenge 2 to make a Shiny app that shows how the decision boundary changes with different values of k.
 
