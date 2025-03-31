@@ -44,8 +44,62 @@ Using the `medicaldata` package, modify the basic Shiny app to take user inputs 
 
 <details>
 <summary>Solution</summary>
+```R
 
+library(shiny)
+library(medicaldata)
+library(ggplot2)
 
+# Define UI for application that draws a histogram
+ui <- fluidPage(
+
+    # Application title
+    titlePanel("Baseline polyp count in males and females"),
+
+    # Flexible fluid row with narrow column for slider input for number of bins 
+    fluidRow(
+        column(width=4,
+            sliderInput("bins",
+                        "Number of bins:",
+                        min = 1,
+                        max = 50,
+                        value = 30)
+        ),
+
+        # Show a plot of the generated distribution
+        column(width=8,
+           plotOutput("distPlot")
+        )
+    ),
+    
+    # A new row for the data table
+    fluidRow(
+      column(width=12,
+             DT::DTOutput("dat_table")
+      )
+    )
+)
+
+# Define server logic required to draw a histogram
+server <- function(input, output) {
+
+    # Render the plot
+    output$distPlot <- renderPlot({
+      
+      ggplot(polyps, aes(x=baseline, colour=sex, fill=sex)) +
+        geom_histogram(alpha=0.5, position="identity", bins=input$bins) +
+        facet_grid(sex ~ .)
+      
+    })
+    
+    # Render the table
+    output$dat_table <- DT::renderDT(polyps, options=list(pageLength=10))
+}
+
+# Run the application 
+shinyApp(ui = ui, server = server)
+
+```
 </details>
 
 ## Challenge 2 (60 mins)
