@@ -42,12 +42,18 @@ That should give you an idea of the main features of Shiny. Of course, there’s
 ## Challenge 1 (10 mins)
 Using the `medicaldata` package, modify the basic Shiny app to take user inputs and produce a plot of one of the medical data sets using `ggplot2`. Add a table of the first few lines of data.
 
+<details>
+<summary>Solution</summary>
+
+
+</details>
+
 ## Challenge 2 (60 mins)
 Using this [simulated data set](moons.csv), can you use your knowledge of [KNN classification](https://www.rdocumentation.org/packages/class/versions/7.3-23/topics/knn) and `ggplot2` to reproduce this plot of a KNN decision boundary?
 
 ![plot of a KNN decision boundary](knn.png)
 
-## Challenge (20 mins)
+## Challenge 3 (20 mins)
 Now use the code from Challenge 2 to make a Shiny app that shows how the decision boundary changes with different values of k.
 
 ## Challenge 4 (60 mins)
