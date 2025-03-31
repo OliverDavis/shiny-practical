@@ -179,5 +179,113 @@ ggplot(dataf) +
 ## Challenge 3 (20 mins)
 Now use the code from Challenge 2 to make a Shiny app that shows how the decision boundary changes with different values of k.
 
+<details>
+<summary>Solution</summary>
+
+```R
+
+library(readr)
+library(ggplot2)
+library(dplyr)
+library(class)
+library(markdown)
+
+train <- read_csv("moons.csv") |>
+  mutate(cl=as.factor(cl))
+
+# Define the grid limits
+x_min <- min(train$x) - 0.2
+x_max <- max(train$x) + 0.2
+y_min <- min(train$y) - 0.2
+y_max <- max(train$y) + 0.2
+
+# Create a grid of values
+test <- expand.grid(x = seq(x_min, x_max, by = 0.1),
+                    y = seq(y_min, y_max, by = 0.1))
+
+# Define UI for application that draws a histogram
+ui <- fluidPage(
+
+    # Application title
+    titlePanel("Value of k in KNN"),
+
+    # Flexible fluid row with narrow column for slider input for value of k
+    fluidRow(
+      column(width=8,
+             includeMarkdown("knn.md")
+      ),  
+      
+      column(width=4,
+            sliderInput("k",
+                        "Value of k:",
+                        min = 1,
+                        max = 100,
+                        value = 5)
+      )
+
+    ),
+    
+    fluidRow(
+      column(width=12,
+             plotOutput("decision_plot", height="500px")
+      )
+    )
+    
+)
+
+
+# Define server logic required to draw a histogram
+server <- function(input, output) {
+  
+  # Render the plot
+  output$decision_plot <- renderPlot({
+    
+    classif <- knn(train = train[,1:2], prob = TRUE, test = test, 
+                   cl = train$cl, k = input$k)
+    
+    prob <- attr(classif, "prob")
+    
+    dataf <- bind_rows(mutate(test,
+                              prob=prob,
+                              cls=0,
+                              prob_cls=ifelse(classif==cls,
+                                              1, 0)),
+                       mutate(test,
+                              prob=prob,
+                              cls=1,
+                              prob_cls=ifelse(classif==cls,
+                                              1, 0))) |>
+      mutate(cls=as.factor(cls))
+    
+    ggplot(dataf) +
+      coord_fixed() +
+      geom_point(aes(x=x, y=y, col=cls, size=prob, alpha=0.2),
+                 data = mutate(test, cls=classif),
+                 show.legend=c(alpha=FALSE, cls=TRUE, prob=TRUE)) + 
+      scale_size(range=c(0,2)) +
+      geom_contour(aes(x=x, y=y, z=prob_cls, group=cls, color=cls),
+                   bins=2,
+                   data=dataf) +
+      geom_point(aes(x=x, y=y, col=cl),
+                 size=3,
+                 data=train) +
+      geom_point(aes(x=x, y=y),
+                 size=3, shape=1,
+                 data=train) +
+      guides(colour=guide_legend("class"),
+             size=guide_legend("probability")) +
+      theme_minimal()
+    
+  })
+    
+}
+
+# Run the application 
+shinyApp(ui = ui, server = server)
+
+```
+
+</details>
+
 ## Challenge 4 (60 mins)
 Shiny is now also available as a [Python package](https://shiny.posit.co/py/). How would you reimplement one of the visualisations you've made in R using Python?
