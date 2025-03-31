@@ -50,13 +50,13 @@ library(shiny)
 library(medicaldata)
 library(ggplot2)
 
-# Define UI for application that draws a histogram
+\# Define UI for application that draws a histogram
 ui <- fluidPage(
 
-    # Application title
+    \# Application title
     titlePanel("Baseline polyp count in males and females"),
 
-    # Flexible fluid row with narrow column for slider input for number of bins 
+    \# Flexible fluid row with narrow column for slider input for number of bins 
     fluidRow(
         column(width=4,
             sliderInput("bins",
@@ -72,7 +72,7 @@ ui <- fluidPage(
         )
     ),
     
-    # A new row for the data table
+    \# A new row for the data table
     fluidRow(
       column(width=12,
              DT::DTOutput("dat_table")
@@ -80,10 +80,10 @@ ui <- fluidPage(
     )
 )
 
-# Define server logic required to draw a histogram
+\# Define server logic required to draw a histogram
 server <- function(input, output) {
 
-    # Render the plot
+    \# Render the plot
     output$distPlot <- renderPlot({
       
       ggplot(polyps, aes(x=baseline, colour=sex, fill=sex)) +
@@ -92,11 +92,11 @@ server <- function(input, output) {
       
     })
     
-    # Render the table
+    \# Render the table
     output$dat_table <- DT::renderDT(polyps, options=list(pageLength=10))
 }
 
-# Run the application 
+\# Run the application 
 shinyApp(ui = ui, server = server)
 
 ```
