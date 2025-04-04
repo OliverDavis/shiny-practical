@@ -383,8 +383,8 @@ app_ui = ui.page_fluid(
             8,
             ui.markdown(
                 """
-               Changing the value of k can influence the decision boundary in k-nearest-neighbour classification.
-               Use the slider to change the value of k and watch how it affects the classification of points in this simulated data set.
+                Changing the value of k can influence the decision boundary in k-nearest-neighbour classification.
+                Use the slider to change the value of k and watch how it affects the classification of points in this simulated data set.
                 """
             ),
         ),
