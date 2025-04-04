@@ -345,4 +345,6 @@ knn_plot.save('knn_plot.png', width=6, height=4, dpi=300)
 
 ```
 
+![plot of a KNN decision boundary using python](knn_plot.png)
+
 </details>
