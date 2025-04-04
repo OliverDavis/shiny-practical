@@ -289,3 +289,60 @@ shinyApp(ui = ui, server = server)
 
 ## Challenge 4 (60 mins)
 Shiny is now also available as a [Python package](https://shiny.posit.co/py/). How would you reimplement one of the visualisations you've made in R using Python?
+
+<details>
+<summary>Solution part one (static plot)</summary>
+
+```python
+
+import pandas as pd
+import numpy as np
+from sklearn.neighbors import KNeighborsClassifier
+from plotnine import ggplot, aes, geom_point, scale_size, guides, guide_legend, theme_tufte
+import matplotlib.pyplot as plt
+
+# Load the dataset
+train = pd.read_csv('./moons.csv')
+train.cl = train.cl.astype('category')
+
+# Find the min and max values for x and y to create a grid for test
+x_min = train['x'].min() - 0.2
+x_max = train['x'].max() + 0.2
+y_min = train['y'].min() - 0.2
+y_max = train['y'].max() + 0.2
+
+test = pd.DataFrame([(x,y) for x in np.arange(x_min, x_max + 0.1, 0.1) for y in np.arange(y_min, y_max + 0.1, 0.1)],
+                    columns=['x', 'y'])
+
+# Set the value of k for KNN and fit the model
+k = 20
+
+knn = KNeighborsClassifier(n_neighbors=k, weights='distance', p=2)
+knn = knn.fit(train[['x','y']], train['cl'])
+
+# Now predict classfication and probabilities across the grid
+classif = knn.predict(test)
+prob = np.array([max(p) for p in knn.predict_proba(test)])
+
+test['cls'] = classif
+test.cls = test.cls.astype('category')
+test['prob'] = prob
+
+# Use plotnine (a python implementation of ggplot) to plot the results
+# Note that geom_contour is not available in plotnine
+knn_plot = (
+    ggplot(test)
+    + geom_point(aes(x='x', y='y', colour='cls', size='prob', alpha=0.2), stroke=0, show_legend={'alpha': False})
+    + scale_size(range=[0, 2.25])
+    + geom_point(aes(x='x', y='y', colour='cl'), size=3, stroke=0, data=train)
+    + geom_point(aes(x='x', y='y'), size=3, fill='none', stroke=0.3, data=train)
+    + guides(colour=guide_legend('class'), size=guide_legend('probability'))
+    + theme_tufte()
+)
+
+# Save the plot
+knn_plot.save('knn_plot.png', width=6, height=4, dpi=300)
+
+```
+
+</details>
