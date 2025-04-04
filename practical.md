@@ -348,3 +348,103 @@ knn_plot.save('knn_plot.png', width=6, height=4, dpi=300)
 ![plot of a KNN decision boundary using python](knn_plot.png)
 
 </details>
+
+<details>
+<summary>Solution part two (interactive plot)</summary>
+
+```python
+
+import pandas as pd
+import numpy as np
+from sklearn.neighbors import KNeighborsClassifier
+from plotnine import ggplot, aes, geom_point, scale_size, guides, guide_legend, theme_tufte
+import matplotlib.pyplot as plt
+
+from shiny import App, render, ui
+
+# Load the dataset
+train = pd.read_csv('./moons.csv')
+train.cl = train.cl.astype('category')
+
+# Find the min and max values for x and y to create a grid for test
+x_min = train['x'].min() - 0.2
+x_max = train['x'].max() + 0.2
+y_min = train['y'].min() - 0.2
+y_max = train['y'].max() + 0.2
+
+test = pd.DataFrame([(x,y) for x in np.arange(x_min, x_max + 0.1, 0.1) for y in np.arange(y_min, y_max + 0.1, 0.1)],
+                    columns=['x', 'y'])
+
+
+app_ui = ui.page_fluid(
+    ui.panel_title("Value of k in KNN"),
+    ui.row(
+        ui.column(
+            8,
+            ui.markdown(
+                """
+               Changing the value of k can influence the decision boundary in k-nearest-neighbour classification.
+               Use the slider to change the value of k and watch how it affects the classification of points in this simulated data set.
+                """
+            ),
+        ),
+        ui.column(
+            4,
+            ui.input_slider(
+                "k",
+                "Value of k",
+                min=1,
+                max=100,
+                value=5,
+                step=1,
+                width="100%",
+            )
+        )
+    ),
+    ui.row(
+        ui.column(
+            12,
+            ui.output_plot("decision_plot", width="100%", height="500px"),
+        )
+    )
+)
+
+def server(input, output, session):
+    @render.plot
+    def decision_plot():
+                
+        # Set the value of k for KNN and fit the model
+        k = input.k()
+
+        knn = KNeighborsClassifier(n_neighbors=k,  p=2)
+        knn = knn.fit(train[['x','y']], train['cl'])
+
+        # Now predict classfication and probabilities across the grid
+        classif = knn.predict(test)
+        prob = np.array([max(p) for p in knn.predict_proba(test)])
+
+        out = test.copy()
+
+        out['cls'] = classif
+        out.cls = out.cls.astype('category')
+        out['prob'] = prob
+
+        # Use plotnine (a python implementation of ggplot) to plot the results
+        # Note that geom_contour is not available in plotnine
+        knn_plot = (
+            ggplot(out)
+            + geom_point(aes(x='x', y='y', colour='cls', size='prob', alpha=0.2), stroke=0, show_legend={'alpha': False})
+            + scale_size(range=[0.1, 2.25])
+            + geom_point(aes(x='x', y='y', colour='cl'), size=3, stroke=0, data=train)
+            + geom_point(aes(x='x', y='y'), size=3, fill='none', stroke=0.3, data=train)
+            + guides(colour=guide_legend('class'), size=guide_legend('probability'))
+            + theme_tufte()
+        )
+
+        return knn_plot
+
+app = App(app_ui, server)
+
+```
+
+</details>
